@@ -62,27 +62,3 @@ export class ProductManager{
 
 }
 
-const productManager = new ProductManager('productos.json')
-
-async function test(){
-    //await productManager.addProduct('titulo1','descripcion1',100,'miniatura1','codigo1',5)
-    //console.log(await productManager.getProductById(2))
-    //await productManager.deleteProduct(8)
-    
-}
-//test()
-
-async function modificar(title,description,price,thumbnail,code,stock){
-    const producto = {
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock,
-    }
-
-    await productManager.updateProduct(producto,2)
-}
-
-//modificar('titulom','decripm',100,'minm','codm',4)
