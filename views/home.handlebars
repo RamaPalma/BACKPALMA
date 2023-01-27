@@ -1,0 +1,15 @@
+{{#if productos.length}}
+{{#each productos}}
+<ul>
+    <li>id: {{id}} </li>
+    <li>titulo: {{title}} </li>
+    <li>descripcion: {{desrciption}} </li>
+    <li>precio: {{price}} </li>
+    <li>miniatura: {{thumbnail}} </li>
+    <li>codigo: {{code}} </li>
+    <li>stock: {{stock}} </li>
+</ul>
+{{/each}}
+{{else}}
+<h2>NO HAY PRODUCTOS REGISTRADOS</h2>
+{{/if}}

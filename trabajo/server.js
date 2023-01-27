@@ -1,11 +1,25 @@
+import fs from 'fs'
 import express from 'express'
+import  handlebars  from 'express-handlebars'
+import { Server } from 'socket.io'
 import { CarritoManager } from './carrito.js'
 import { ProductManager } from './productos.js'
+import {dirname} from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
+
+app.use(express.static('./public'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+
 const productManager = new ProductManager('productos.json')
 const carritoManager = new CarritoManager('carrito.json')
+
+app.engine('handlebars',handlebars.engine())
+app.set('view engine','handlebars')
+app.set('views','./views')
 
 //ESTRUCTURA PRODUCTO PARA POST
 /*
@@ -18,13 +32,28 @@ const carritoManager = new CarritoManager('carrito.json')
     "stock": 3
 }
 */
-
 //PRODUCTOS
 app.get('/products',async(req,res)=>{ 
     const {limit} = req.query
     const productos = await productManager.getProduct(limit || 'max')
-    res.json({productos})
+    res.render('home',{productos})
 })
+
+app.get('/realtimeproducts',async(req,res)=>{ 
+    const productos = await productManager.getProduct()
+    res.render('realTimeProducts')
+})
+
+app.post('/realtimeproducts',async(req,res)=>{ 
+    const producto = req.body
+    const productos = await productManager.getProduct()
+    let id = productos.length === 0 ? 1 : productos[productos.length - 1].id + 1
+    const producto1 = {id, ...producto}
+    productos.push(producto1)
+    await fs.promises.writeFile('./productos.json', JSON.stringify(productos))
+    res.render('realTimeProducts')
+})
+
 
 app.get('/products/:pid',async(req,res)=>{ 
     const {pid} = req.params
@@ -67,8 +96,6 @@ app.delete('/products/:pid',async(req,res)=>{
                 ]
 }
 */
-
-
 //CARRITO
 app.post('/carts',async(req,res)=>{ 
     const objeto = req.body
@@ -103,6 +130,8 @@ app.post('/carts/:cid/product/:pid',async(req,res)=> {
 
 const PORT = 8080
 
-app.listen(PORT, ()=>{ 
+const httpServer = app.listen(PORT, ()=>{ 
     console.log(`escuchando al ${PORT}`)
 } )
+
+const socketServer =new Server(httpServer)

@@ -27,7 +27,7 @@ export class ProductManager{
 
     async addProduct(objeto) {
         const productos = await this.getProduct()
-        let id = productos .length === 0 ? 1 : productos[productos.length - 1].id + 1
+        let id = 1
         const producto = {id, ...objeto}   
         productos.push(producto)
         await fs.promises.writeFile(this.path,JSON.stringify(productos))
