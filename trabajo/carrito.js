@@ -21,14 +21,6 @@ export class CarritoManager{
         }
     }
 
-    async addCarrito(objeto) {
-        const carritos = await this.getCarrito()
-        let id = carritos .length === 0 ? 1 : carritos[carritos.length - 1].id + 1
-        const carrito = {id, ...objeto}   
-        carritos.push(carrito)
-        await fs.promises.writeFile(this.path,JSON.stringify(carritos))
-    }
-
     async getCarritoById(id){
         const carritos = await this.getCarrito()
         const carrito = carritos.find((p) => p.id == parseInt(id))
