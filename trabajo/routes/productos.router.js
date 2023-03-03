@@ -21,10 +21,11 @@ const router = Router()
 router.get('/',async(req,res)=>{
     const {limit} = req.query
     const productos = await productoManager.getProduct(limit)
+    
     if (!productos) {
         res.json({message:'Error'})
     } else {
-        res.json({message:'Succes',productos})
+        res.redirect('/views/producto')
     }
 })
 

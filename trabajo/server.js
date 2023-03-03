@@ -8,7 +8,12 @@ import {dirname} from 'path'
 import { fileURLToPath } from 'url'
 import productosRouter from './routes/productos.router.js'
 import carritoRouter from './routes/carrito.router.js'
+import sessionRouter from './routes/session.router.js'
+import viewsRouter from './routes/views.router.js'
+import usersRouter from './routes/users.router.js'
 import './dbConfig.js'
+import session, { Cookie } from 'express-session'
+import MongoStore from 'connect-mongo'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -17,48 +22,36 @@ app.use(express.static('./public'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+//session
+app.use(
+    session({
+        store : new MongoStore ({
+            mongoUrl: 'mongodb+srv://ramiroP:ramiroP@cluster0.0zxay99.mongodb.net/productos?retryWrites=true&w=majority'
+        }),
+        resave: false,
+        saveUninitialized: false,
+        secret: 'sessionKey',
+        cookie:{maxAge:60000}
+    })
+)
+
+// routes
+app.get('/',(req,res) => {
+    res.redirect('/views/login')
+})
+app.use('/session',sessionRouter)
+app.use('/views',viewsRouter)
 app.use('/products',productosRouter)
 app.use('/carts',carritoRouter)
+app.use('/users',usersRouter)
 
 const productManager = new ProductManager('productos.json')
 const carritoManager = new CarritoManager('carrito.json')
 
+// handlebarts
 app.engine('handlebars',handlebars.engine())
 app.set('view engine','handlebars')
 app.set('views','./views')
-
-
-//CARRITO
-app.post('/carts',async(req,res)=>{ 
-    const objeto = req.body
-    await carritoManager.addCarrito(objeto)
-    res.json({message:"CARRITO AGREGADO"})
-})
-
-app.get('/carts/:cid',async(req,res)=>{ 
-    const {cid} = req.params
-    const carrito  = await carritoManager.getCarritoById(parseInt(cid))
-    res.json({carrito})
-})
-
-/*
-app.post('/carts/:cid/product/:pid',async(req,res)=> {
-        const {cid , pid}  = req.params
-
-        const carritos = await carritoManager.getCarrito()
-
-        const producto = await productManager.getProductById(parseInt(pid))
-        const carrito = await carritoManager.getCarritoById(parseInt(cid))
-
-        carrito.productos[0].quantity++
-
-        
-
-        JSON.stringify(carritos)
-
-    });    
-
-*/
 
 const PORT = 8080
 
