@@ -14,6 +14,8 @@ import usersRouter from './routes/users.router.js'
 import './dbConfig.js'
 import session, { Cookie } from 'express-session'
 import MongoStore from 'connect-mongo'
+import passport from 'passport'
+import './passport/localPass.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -34,6 +36,11 @@ app.use(
         cookie:{maxAge:60000}
     })
 )
+
+//passport
+app.use(passport.initialize())
+
+app.use(passport.session())
 
 // routes
 app.get('/',(req,res) => {
