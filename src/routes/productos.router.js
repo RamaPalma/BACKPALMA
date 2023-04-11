@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import {Router} from "express";
-import ProductoManager from "../productosMongo.js";
+import ProductoManager from "../DAL/productosMongo.js";
 
 const productoManager = new ProductoManager()
 

@@ -1,4 +1,4 @@
-import { carritoModel } from "../trabajo/db/models/carrito.models.js";
+import { carritoModel } from "../DAL/models/carrito.models.js";
 
 export default class CarritoManager {
     

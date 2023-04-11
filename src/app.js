@@ -1,21 +1,22 @@
-import fs from 'fs'
 import express from 'express'
 import  handlebars  from 'express-handlebars'
 import { Server } from 'socket.io'
-import { CarritoManager } from './carrito.js'
-import { ProductManager } from './productos.js'
+import { CarritoManager } from './DAL/carrito.js'
+import { ProductManager } from './DAL/productos.js'
 import {dirname} from 'path'
 import { fileURLToPath } from 'url'
-import productosRouter from './routes/productos.router.js'
+import  productosRouter  from './routes/productos.router.js'
 import carritoRouter from './routes/carrito.router.js'
 import sessionRouter from './routes/session.router.js'
 import viewsRouter from './routes/views.router.js'
 import usersRouter from './routes/users.router.js'
-import './dbConfig.js'
+import './DAL/dbConfig.js'
 import session, { Cookie } from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import './passport/localPass.js'
+import config from './config.js'
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -60,7 +61,7 @@ app.engine('handlebars',handlebars.engine())
 app.set('view engine','handlebars')
 app.set('views','./views')
 
-const PORT = 8080
+const PORT = config.port
 
 const httpServer = app.listen(PORT, ()=>{ 
     console.log(`escuchando al ${PORT}`)

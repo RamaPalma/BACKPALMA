@@ -1,6 +1,6 @@
 import {Router} from "express";
-import {usersModel} from '../db/models/user.models.js'
-import { hashPassword,comparePasswords } from "../util.js";
+import {usersModel} from '../DAL/models/user.models.js'
+import { hashPassword,comparePasswords } from "../utils/util.js";
 import passport from "passport";
 
 const router = Router()

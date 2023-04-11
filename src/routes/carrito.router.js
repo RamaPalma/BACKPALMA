@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import {Router} from "express";
-import  CarritoManager  from "../carritoMongo.js";
+import  CarritoManager  from "../DAL/carritoMongo.js";
 
 const carritoManager = new CarritoManager()
 const router = Router()

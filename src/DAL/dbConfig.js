@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import config from '../config.js'
 
-const URI_MONGO = 'mongodb+srv://ramiroP:ramiroP@cluster0.0zxay99.mongodb.net/productos?retryWrites=true&w=majority'
+const URI_MONGO = config.uri
 
 mongoose.connect(URI_MONGO,(error)=>{
     if (error) {
