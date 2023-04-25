@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as localStrategy} from "passport-local";
-import { usersModel } from "../DAL/models/user.models.js";
+import { usersModel } from "../DAO/models/user.models.js";
 import { hashPassword } from "../utils/util.js";
 
 passport.use('registro', new localStrategy({

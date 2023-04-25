@@ -1,4 +1,4 @@
-import {productoModel} from '../DAL/models/producto.model.js'
+import {productoModel} from './models/producto.model.js'
 
 export default class ProductoManager {
 

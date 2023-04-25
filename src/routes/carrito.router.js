@@ -1,31 +1,31 @@
-import mongoose from "mongoose";
-import {Router} from "express";
-import  CarritoManager  from "../DAL/carritoMongo.js";
+import { Router } from 'express'
+import {getAllCarts, addCart, getCartByID, addProdsToCart, updateProductsQuantity,deleteProdsFromCart, emptyCartById} from '../controllers/carrito.controller.js';
 
-const carritoManager = new CarritoManager()
-const router = Router()
 
-//ESTRUCTURA CARRITO PARA POST
-/*
-{
-    "productos":  [
-    {
-        "id": "63f53a579250faba02f2e3c4",
-        "quantity":3
-    },
-    {
-        "id": "63f546e85e493923fa25fa0e",
-        "quantity":3
-    }
-                ]
-}
-*/
+const cartRouter = Router()
 
-//CARRITO
-router.post('/',async(req,res)=>{ 
-    const objeto = req.body
-    await carritoManager.addCarrito(objeto)
-    res.json({message:"CARRITO AGREGADO"})
-})
 
-export default router
+// get
+
+cartRouter.get('/', getAllCarts);
+cartRouter.get('/:cartId', getCartByID);
+
+//post 
+
+cartRouter.post('/', addCart)
+
+
+//put
+
+cartRouter.put('/:cartId', addProdsToCart)
+cartRouter.put('/:cartId/products/:prodId', updateProductsQuantity)
+
+
+//delete
+
+cartRouter.delete('/:cartId/product/:prodId', deleteProdsFromCart);
+cartRouter.delete('/:cartId', emptyCartById)
+
+
+
+export default cartRouter
